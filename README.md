@@ -11,21 +11,19 @@ developed incrementally as a full-stack portfolio project.
 
 ### Frontend
 
--   React
--   TypeScript
--   Vite
--   Tailwind CSS
--   Fetch API
+-   React 19.3.1
+-   TypeScript 5.9.3
+-   Vite 8.3.5
+-   Tailwind CSS 4.3.3
+-   Axios 1.21.0
 
 ### Backend
 
--   Java
--   Spring Boot
+-   Java 17
+-   Spring Boot 4.0.9
 -   Spring Data JPA
 -   Hibernate
 -   REST API
--   DTOs and Mapper
--   Input validation and exception handling
 
 ### Database
 
@@ -147,7 +145,7 @@ task-management-app/
 ├── frontend/
 │   ├── src/
 │   ├── package.json
-│   └── .env.example
+│   └── .env
 ├── backend/
 │   ├── src/
 │   └── pom.xml
