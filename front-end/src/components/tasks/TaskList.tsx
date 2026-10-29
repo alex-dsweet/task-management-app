@@ -6,6 +6,7 @@ type TaskListProps = {
   tasks: Task[]
   totalTasks: number
   onStatusChange: (id: number, status: TaskStatus) => void
+  onEdit: (task: Task) => void
   onDelete: (task: Task) => void
   onCreateTask: () => void
 }
@@ -14,6 +15,7 @@ export default function TaskList({
   tasks,
   totalTasks,
   onStatusChange,
+  onEdit,
   onDelete,
   onCreateTask,
 }: TaskListProps) {
@@ -29,7 +31,13 @@ export default function TaskList({
       <div className="divide-y divide-[#F0EBDD]">
         {tasks.length > 0 ? (
           tasks.map((task) => (
-            <TaskItem key={task.id} task={task} onStatusChange={onStatusChange} onDelete={onDelete} />
+            <TaskItem
+              key={task.id}
+              task={task}
+              onStatusChange={onStatusChange}
+              onEdit={onEdit}
+              onDelete={onDelete}
+            />
           ))
         ) : (
           <EmptyState onCreateTask={onCreateTask} />
