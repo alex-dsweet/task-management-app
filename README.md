@@ -134,14 +134,19 @@ The exact folder names may vary depending on how the repository is organized.
 
 ``` text
 task-management-app/
+│ 
 ├── frontend/
 │   ├── src/
 │   ├── package.json
 │   └── .env
+│ 
 ├── backend/
 │   ├── src/
 │   └── pom.xml
+│ 
+├── .gitattributes
 ├── .gitignore
+│ 
 └── README.md
 ```
 
