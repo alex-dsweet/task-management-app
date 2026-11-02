@@ -26,7 +26,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alexdsweet.taskmanagement.dto.TaskRequestDTO;
 import com.alexdsweet.taskmanagement.dto.TaskResponseDTO;
 import com.alexdsweet.taskmanagement.dto.TaskStatisticsDTO;
-import com.alexdsweet.taskmanagement.entity.TaskStatus;
+import com.alexdsweet.taskmanagement.enums.TaskPriority;
+import com.alexdsweet.taskmanagement.enums.TaskStatus;
 import com.alexdsweet.taskmanagement.service.TaskService;
 
 import jakarta.validation.Valid;
@@ -49,9 +50,10 @@ public class TaskController {
 			@RequestParam(defaultValue = "createdAt") String sortBy,
 			@RequestParam(defaultValue = "desc") String direction,
 			@RequestParam(required = false) String keyword,
-			@RequestParam(required = false) TaskStatus status) {
+			@RequestParam(required = false) TaskStatus status,
+			@RequestParam(required = false) TaskPriority priority) {
 
-		return mTaskService.getAllTasks(page, size, sortBy, direction, keyword, status);
+		return mTaskService.getAllTasks(page, size, sortBy, direction, keyword, status, priority);
 	}
 
 	@GetMapping("/{id}")

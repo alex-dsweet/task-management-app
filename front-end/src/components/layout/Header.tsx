@@ -10,7 +10,7 @@ export default function Header() {
           <span className="mr-2 mt-1 h-1.5 w-1.5 rounded-full bg-emerald-500" />
           Workspace active
         </span>
-        <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E8D8B8] bg-[#F8F0DE] font-bold text-[#89632F] ring-4 ring-[#FBF8F1]">M</div>
+        <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E8D8B8] bg-[#F8F0DE] font-bold text-[#89632F] ring-4 ring-[#FBF8F1]">A</div>
       </div>
     </header>
   )

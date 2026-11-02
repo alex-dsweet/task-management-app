@@ -15,7 +15,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import com.alexdsweet.taskmanagement.enums.TaskPriority;
+import com.alexdsweet.taskmanagement.enums.TaskStatus;
 
 @Entity
 @Table(name = "tasks")
@@ -35,10 +39,20 @@ public class Task {
 	@Enumerated(EnumType.STRING)
 	@NotNull(message = "Status must not be null")
 	private TaskStatus status = TaskStatus.TODO;
+	
+	@Enumerated(EnumType.STRING)
+	@NotNull(message = "Priority must not be null")
+	private TaskPriority priority = TaskPriority.MEDIUM;
 
 	private LocalDateTime createdAt;
 
 	private LocalDateTime updatedAt;
+	
+	@Column(name = "due_date")
+	private LocalDate dueDate;
+
+	@Column(name = "completed_at")
+	private LocalDateTime completedAt;
 
 	public Task() {
 	}
@@ -47,6 +61,10 @@ public class Task {
 	protected void onCreate() {
 		createdAt = LocalDateTime.now();
 		updatedAt = createdAt;
+		
+		if (status == TaskStatus.DONE && completedAt == null) {
+			completedAt = createdAt;
+		}
 	}
 
 	@PreUpdate
@@ -85,6 +103,14 @@ public class Task {
 	public void setStatus(TaskStatus status) {
 		this.status = status;
 	}
+	
+	public TaskPriority getPriority() {
+		return priority;
+	}
+
+	public void setPriority(TaskPriority priority) {
+		this.priority = priority;
+	}
 
 	public LocalDateTime getCreatedAt() {
 		return createdAt;
@@ -92,5 +118,21 @@ public class Task {
 
 	public LocalDateTime getUpdatedAt() {
 		return updatedAt;
+	}
+	
+	public LocalDate getDueDate() {
+		return dueDate;
+	}
+
+	public void setDueDate(LocalDate dueDate) {
+		this.dueDate = dueDate;
+	}
+
+	public LocalDateTime getCompletedAt() {
+		return completedAt;
+	}
+
+	public void setCompletedAt(LocalDateTime completedAt) {
+		this.completedAt = completedAt;
 	}
 }
