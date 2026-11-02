@@ -5,10 +5,16 @@ import { statusConfig } from '../ui/statusConfig'
 type TaskItemProps = {
   task: Task
   onStatusChange: (id: number, status: TaskStatus) => void
+  onEdit: (task: Task) => void
   onDelete: (task: Task) => void
 }
 
-export default function TaskItem({ task, onStatusChange, onDelete }: TaskItemProps) {
+export default function TaskItem({
+  task,
+  onStatusChange,
+  onEdit,
+  onDelete,
+}: TaskItemProps) {
   const statusStyle = statusConfig[task.status]
 
   return (
@@ -40,7 +46,16 @@ export default function TaskItem({ task, onStatusChange, onDelete }: TaskItemPro
         <span className="mr-2 md:hidden">Created:</span>{task.createdAt ? new Date(task.createdAt).toLocaleDateString() : '—'}
       </div>
 
-      <div className="flex justify-end md:col-span-1">
+      <div className="flex justify-end gap-2 md:col-span-1">
+        <button
+          onClick={() => onEdit(task)}
+          aria-label={`Edit ${task.title}`}
+          title="Edit task"
+          className="rounded-lg border border-[#E8E0D1] px-3 py-1.5 text-xs font-medium text-[#817563] transition hover:border-[#B68B45] hover:bg-[#FCFAF5] hover:text-[#89632F]"
+        >
+          Edit
+        </button>
+
         <button
           onClick={() => onDelete(task)}
           aria-label={`Delete ${task.title}`}

@@ -29,14 +29,10 @@ The app provides a dashboard for creating, viewing, updating, searching, filteri
 ## Features
 
 -   Create, view, update, and delete tasks (CRUD)
--   Task statuses: `TODO`, `IN_PROGRESS`, and `DONE`
--   Search and filter tasks
--   Task statistics dashboard
 -   Persist task data in MySQL through the Spring Boot REST API
--   DTO-based API data transfer
+-   Task statistics dashboard
 -   Input validation and exception handling
--   Status-specific UI styling
--   Pagination and sorting
+-   Search, filter, pagination and sorting tasks
 
 ## Architecture
 
@@ -124,6 +120,7 @@ The frontend is configured around these REST API routes. Confirm them against th
 |---|---|---|
 | `GET` | `/api/tasks` | Get all tasks |
 | `GET` | `/api/tasks/{id}` | Get a task |
+| `GET` | `/api/tasks/statistics` | Count tasks base on stastus |
 | `POST` | `/api/tasks` | Create a task |
 | `PUT` | `/api/tasks/{id}` | Update a task |
 | `DELETE` | `/api/tasks/{id}` | Delete a task |
@@ -151,7 +148,7 @@ task-management-app/
 ```
 
 ## Upcoming Features
-
+-   [ ] Task Priority & Task Detail View
 -   [ ] Automated unit and integration tests
 -   [ ] Docker setup
 -   [ ] Improve API documentation
