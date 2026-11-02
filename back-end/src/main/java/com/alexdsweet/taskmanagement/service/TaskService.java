@@ -10,15 +10,18 @@
  */
 package com.alexdsweet.taskmanagement.service;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.alexdsweet.taskmanagement.dto.TaskRequestDTO;
 import com.alexdsweet.taskmanagement.dto.TaskResponseDTO;
+import com.alexdsweet.taskmanagement.dto.TaskStatisticsDTO;
 import com.alexdsweet.taskmanagement.entity.Task;
+import com.alexdsweet.taskmanagement.entity.TaskStatus;
 import com.alexdsweet.taskmanagement.mapper.TaskMapper;
 import com.alexdsweet.taskmanagement.repository.TaskRepository;
 
@@ -32,12 +35,19 @@ public class TaskService {
 		mTaskMapper = inTaskMapper;
 	}
 
-	public List<TaskResponseDTO> getAllTasks() {
+	public Page<TaskResponseDTO> getAllTasks(int page, int size, String sortBy, String direction, String keyword,
+			TaskStatus status) {
+
+		String normalizedKeyword = (keyword == null || keyword.isBlank()) ? null : keyword.trim();
+
+		Sort sort = direction.equalsIgnoreCase("asc") 
+						? Sort.by(sortBy).ascending()
+						: Sort.by(sortBy).descending();
+
+		PageRequest pageRequest = PageRequest.of(page, size, sort);
+
 		return mTaskRepository
-				.findAll()
-				.stream()
-				.map(mTaskMapper::toResponse)
-				.collect(Collectors.toList());
+				.searchAndFilter(normalizedKeyword, status, pageRequest).map(mTaskMapper::toResponse);
 	}
 
 	public Optional<TaskResponseDTO> getTaskById(Long id) {
@@ -70,4 +80,13 @@ public class TaskService {
 //	public void clearAllTasks() {
 //		mTaskRepository.deleteAll();
 //	}
+	
+	public TaskStatisticsDTO getTaskStatistics() {
+		long totalTasks = mTaskRepository.count();
+		long todoTasks = mTaskRepository.countByStatus(TaskStatus.TODO);
+		long inProgressTasks = mTaskRepository.countByStatus(TaskStatus.IN_PROGRESS);
+		long doneTasks = mTaskRepository.countByStatus(TaskStatus.DONE);
+
+		return new TaskStatisticsDTO(totalTasks, todoTasks, inProgressTasks, doneTasks);
+	}
 }

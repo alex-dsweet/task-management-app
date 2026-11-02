@@ -10,8 +10,7 @@
  */
 package com.alexdsweet.taskmanagement.controller;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,13 +20,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alexdsweet.taskmanagement.dto.TaskRequestDTO;
 import com.alexdsweet.taskmanagement.dto.TaskResponseDTO;
+import com.alexdsweet.taskmanagement.dto.TaskStatisticsDTO;
+import com.alexdsweet.taskmanagement.entity.TaskStatus;
 import com.alexdsweet.taskmanagement.service.TaskService;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 
 @RestController
 @RequestMapping("/api/tasks")
@@ -39,8 +43,15 @@ public class TaskController {
 	}
 
 	@GetMapping
-	public List<TaskResponseDTO> getAllTasks() {
-		return mTaskService.getAllTasks();
+	public Page<TaskResponseDTO> getAllTasks(
+			@RequestParam(defaultValue = "0") @Min(0) int page,
+			@RequestParam(defaultValue = "10") @Min(1) @Max(100) int size,
+			@RequestParam(defaultValue = "createdAt") String sortBy,
+			@RequestParam(defaultValue = "desc") String direction,
+			@RequestParam(required = false) String keyword,
+			@RequestParam(required = false) TaskStatus status) {
+
+		return mTaskService.getAllTasks(page, size, sortBy, direction, keyword, status);
 	}
 
 	@GetMapping("/{id}")
@@ -76,4 +87,9 @@ public class TaskController {
 //		mTaskService.clearAllTasks();
 //		return ResponseEntity.noContent().build();
 //	}
+	
+	@GetMapping("/statistics")
+	public TaskStatisticsDTO getTaskStatistics() {
+		return mTaskService.getTaskStatistics();
+	}
 }

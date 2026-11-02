@@ -1,4 +1,10 @@
-import type { Task, TaskStatus } from '../types/task'
+import type {
+  Task,
+  TaskStatus,
+  PageResponse,
+  TaskPageParams,
+  TaskStatistics,
+} from '../types/task'
 
 // Override this in .env if your Spring Boot API uses another host or path.
 const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api/tasks').replace(/\/$/, '')
@@ -29,7 +35,24 @@ async function request<T>(path = '', init?: RequestInit): Promise<T> {
 }
 
 export const taskApi = {
-  getAll: () => request<Task[]>(),
+  getAll: (params: TaskPageParams) => {
+    const queryParams = new URLSearchParams({
+      page: String(params.page),
+      size: String(params.size),
+      sortBy: params.sortBy,
+      direction: params.direction,
+    })
+
+    if (params.keyword.trim()) {
+      queryParams.set('keyword', params.keyword.trim())
+    }
+
+    if (params.status !== 'ALL') {
+      queryParams.set('status', params.status)
+    }
+
+    return request<PageResponse<Task>>(`?${queryParams.toString()}`)
+  },
   create: (payload: TaskPayload) =>
     request<Task>('', { method: 'POST', body: JSON.stringify(payload) }),
   update: (task: Task) =>
@@ -44,4 +67,5 @@ export const taskApi = {
   updateStatus: (task: Task, status: TaskStatus) =>
     taskApi.update({ ...task, status }),
   delete: (id: number) => request<void>(`/${id}`, { method: 'DELETE' }),
+  getStatistics: () => request<TaskStatistics>('/statistics'),
 }
