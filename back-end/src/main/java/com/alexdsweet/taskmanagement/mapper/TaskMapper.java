@@ -23,16 +23,22 @@ public class TaskMapper {
 		task.setTitle(inTaskRequest.getTitle());
 		task.setDescription(inTaskRequest.getDescription());
 		task.setStatus(inTaskRequest.getStatus());
+		task.setPriority(inTaskRequest.getPriority());
+		task.setDueDate(inTaskRequest.getDueDate());
 		return task;
 	}
 
 	public TaskResponseDTO toResponse(Task inTask) {
-		return new TaskResponseDTO(
-				inTask.getId(),
-				inTask.getTitle(),
-				inTask.getDescription(),
-				inTask.getStatus(),
-				inTask.getCreatedAt(),
-				inTask.getUpdatedAt());
+		return TaskResponseDTO.builder()
+				.id(inTask.getId())
+				.title(inTask.getTitle())
+				.description(inTask.getDescription())
+				.status(inTask.getStatus())
+				.priority(inTask.getPriority())
+				.createdAt(inTask.getCreatedAt())
+				.updatedAt(inTask.getUpdatedAt())
+				.dueDate(inTask.getDueDate())
+				.completedAt(inTask.getCompletedAt())
+				.build();
 	}
 }

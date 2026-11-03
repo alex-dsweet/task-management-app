@@ -10,13 +10,16 @@
  */
 package com.alexdsweet.taskmanagement.dto;
 
-import com.alexdsweet.taskmanagement.entity.TaskStatus;
+import java.time.LocalDate;
+
+import com.alexdsweet.taskmanagement.enums.TaskPriority;
+import com.alexdsweet.taskmanagement.enums.TaskStatus;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class TaskRequestDTO {
-
 	@NotBlank(message = "Title must not be blank")
 	@Size(max = 100, message = "Title must not exceed 100 characters")
 	private String title;
@@ -26,6 +29,11 @@ public class TaskRequestDTO {
 
 	@NotNull(message = "Status must not be null")
 	private TaskStatus status;
+	
+	@NotNull(message = "Priority must not be null")
+	private TaskPriority priority = TaskPriority.MEDIUM;
+	
+	private LocalDate dueDate;
 
 	public TaskRequestDTO() {
 	}
@@ -52,5 +60,21 @@ public class TaskRequestDTO {
 
 	public void setStatus(TaskStatus status) {
 		this.status = status;
+	}
+	
+	public TaskPriority getPriority() {
+		return priority;
+	}
+
+	public void setPriority(TaskPriority priority) {
+		this.priority = priority;
+	}
+	
+	public LocalDate getDueDate() {
+		return dueDate;
+	}
+
+	public void setDueDate(LocalDate dueDate) {
+		this.dueDate = dueDate;
 	}
 }

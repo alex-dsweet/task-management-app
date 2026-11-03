@@ -10,6 +10,7 @@
  */
 package com.alexdsweet.taskmanagement.service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -21,7 +22,8 @@ import com.alexdsweet.taskmanagement.dto.TaskRequestDTO;
 import com.alexdsweet.taskmanagement.dto.TaskResponseDTO;
 import com.alexdsweet.taskmanagement.dto.TaskStatisticsDTO;
 import com.alexdsweet.taskmanagement.entity.Task;
-import com.alexdsweet.taskmanagement.entity.TaskStatus;
+import com.alexdsweet.taskmanagement.enums.TaskPriority;
+import com.alexdsweet.taskmanagement.enums.TaskStatus;
 import com.alexdsweet.taskmanagement.mapper.TaskMapper;
 import com.alexdsweet.taskmanagement.repository.TaskRepository;
 
@@ -36,7 +38,7 @@ public class TaskService {
 	}
 
 	public Page<TaskResponseDTO> getAllTasks(int page, int size, String sortBy, String direction, String keyword,
-			TaskStatus status) {
+			TaskStatus status, TaskPriority priority) {
 
 		String normalizedKeyword = (keyword == null || keyword.isBlank()) ? null : keyword.trim();
 
@@ -46,8 +48,8 @@ public class TaskService {
 
 		PageRequest pageRequest = PageRequest.of(page, size, sort);
 
-		return mTaskRepository
-				.searchAndFilter(normalizedKeyword, status, pageRequest).map(mTaskMapper::toResponse);
+		return mTaskRepository.searchAndFilter(normalizedKeyword, status, priority, pageRequest)
+				.map(mTaskMapper::toResponse);
 	}
 
 	public Optional<TaskResponseDTO> getTaskById(Long id) {
@@ -67,6 +69,18 @@ public class TaskService {
 			existingTask.setTitle(inTaskRequest.getTitle());
 			existingTask.setDescription(inTaskRequest.getDescription());
 			existingTask.setStatus(inTaskRequest.getStatus());
+			existingTask.setPriority(inTaskRequest.getPriority());
+			existingTask.setDueDate(inTaskRequest.getDueDate());
+			
+			TaskStatus oldStatus = existingTask.getStatus();
+			TaskStatus newStatus = inTaskRequest.getStatus();
+			if (newStatus == TaskStatus.DONE) {
+				if (oldStatus != TaskStatus.DONE || existingTask.getCompletedAt() == null) {
+					existingTask.setCompletedAt(LocalDateTime.now());
+				}
+			} else {
+				existingTask.setCompletedAt(null);
+			}
 
 			Task updatedTask = mTaskRepository.save(existingTask);
 			return mTaskMapper.toResponse(updatedTask);
