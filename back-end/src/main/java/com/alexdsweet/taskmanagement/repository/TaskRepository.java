@@ -18,7 +18,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.alexdsweet.taskmanagement.entity.Task;
-import com.alexdsweet.taskmanagement.entity.TaskStatus;
+import com.alexdsweet.taskmanagement.enums.TaskPriority;
+import com.alexdsweet.taskmanagement.enums.TaskStatus;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
@@ -30,10 +31,13 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 			        LOWER(t.description) LIKE LOWER(CONCAT('%', :keyword, '%')))
 			    AND
 			    (:status IS NULL OR t.status = :status)
+			    AND
+			    (:priority IS NULL OR t.priority = :priority)
 			""")
 	Page<Task> searchAndFilter(
 				@Param("keyword") String keyword,
 				@Param("status") TaskStatus status,
+				@Param("priority") TaskPriority priority,
 				Pageable pageable
 		);
 	

@@ -8,10 +8,10 @@
  * For commercial use, please contact me 
  * at 'conghau.contact@gmail.com' to obtain permission.
  */
-package com.alexdsweet.taskmanagement.entity;
+package com.alexdsweet.taskmanagement.enums;
 
-public enum TaskStatus {
-	TODO,
-	IN_PROGRESS,
-	DONE
+public enum TaskPriority {
+	LOW,
+	MEDIUM,
+	HIGH
 }

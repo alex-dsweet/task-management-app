@@ -1,12 +1,17 @@
 export type TaskStatus = 'TODO' | 'IN_PROGRESS' | 'DONE'
 
+export type TaskPriority = 'LOW' | 'MEDIUM' | 'HIGH'
+
 export type Task = {
   id: number
   title: string
   description: string | null
   status: TaskStatus
+  priority: TaskPriority
   createdAt: string
   updatedAt?: string | null
+  dueDate: string | null
+  completedAt: string | null
 }
 
 export interface PageResponse<T> {
@@ -27,6 +32,7 @@ export interface TaskPageParams {
   direction: 'asc' | 'desc'
   keyword: string
   status: TaskFilter
+  priority: PriorityFilter
 }
 
 export interface TaskStatistics {
@@ -37,3 +43,5 @@ export interface TaskStatistics {
 }
 
 export type TaskFilter = 'ALL' | TaskStatus
+
+export type PriorityFilter = 'ALL' | TaskPriority

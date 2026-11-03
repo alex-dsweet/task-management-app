@@ -33,6 +33,7 @@ The app provides a dashboard for creating, viewing, updating, searching, filteri
 -   Task statistics dashboard
 -   Input validation and exception handling
 -   Search, filter, pagination and sorting tasks
+-   Task priority & Task detail view
 
 ## Architecture
 
@@ -148,7 +149,6 @@ task-management-app/
 ```
 
 ## Upcoming Features
--   [ ] Task Priority & Task Detail View
 -   [ ] Automated unit and integration tests
 -   [ ] Docker setup
 -   [ ] Improve API documentation

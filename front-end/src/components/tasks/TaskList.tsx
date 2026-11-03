@@ -9,6 +9,7 @@ type TaskListProps = {
   onEdit: (task: Task) => void
   onDelete: (task: Task) => void
   onCreateTask: () => void
+  onView: (task: Task) => void
 }
 
 export default function TaskList({
@@ -18,16 +19,20 @@ export default function TaskList({
   onEdit,
   onDelete,
   onCreateTask,
+  onView,
 }: TaskListProps) {
   return (
-    <section className="overflow-hidden rounded-2xl border border-[#E9E1D3] bg-white shadow-sm shadow-[#8C7349]/5">
-      <div className="hidden grid-cols-12 gap-4 bg-[#FCFAF5] px-6 py-3 text-[11px] font-bold uppercase tracking-wider text-[#A19683] md:grid">
-        <div className="col-span-6">Task</div>
-        <div className="col-span-3">Status</div>
-        <div className="col-span-2">Created</div>
-        <div className="col-span-1 text-right">Action</div>
+    <section className="overflow-hidden bg-white">
+      {/* Table Header */}
+      <div className="hidden grid-cols-12 items-center gap-4 border-b border-[#F0EBDD] bg-gradient-to-r from-[#FFFBF3] to-white px-6 py-4 text-[11px] font-bold uppercase tracking-[0.12em] text-[#A19683] lg:grid">
+        <div className="col-span-5">Task Information</div>
+        <div className="col-span-2">Status</div>
+        <div className="col-span-2">Deadline</div>
+        <div className="col-span-1">Created</div>
+        <div className="col-span-2 text-right">Actions</div>
       </div>
 
+      {/* Task Rows */}
       <div className="divide-y divide-[#F0EBDD]">
         {tasks.length > 0 ? (
           tasks.map((task) => (
@@ -37,6 +42,7 @@ export default function TaskList({
               onStatusChange={onStatusChange}
               onEdit={onEdit}
               onDelete={onDelete}
+              onView={onView}
             />
           ))
         ) : (
@@ -44,10 +50,21 @@ export default function TaskList({
         )}
       </div>
 
-      <div className="flex flex-col gap-2 border-t border-[#F0EBDD] bg-[#FCFAF5] px-5 py-4 text-xs text-[#A19683] sm:flex-row sm:items-center sm:justify-between sm:px-6">
-        <span>Showing {tasks.length} of {totalTasks} tasks</span>
-        <span>TaskFlow Workspace</span>
-      </div>
+      {/* List Footer */}
+      {tasks.length > 0 && (
+        <div className="flex flex-wrap items-center justify-between gap-2 border-t border-[#F0EBDD] bg-[#FFFEFC] px-6 py-3">
+          <div className="flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-emerald-400" />
+            <span className="text-xs font-medium text-[#938773]">
+              {tasks.length} tasks displayed
+            </span>
+          </div>
+
+          <span className="rounded-full border border-[#EFE5D4] bg-[#FCFAF5] px-3 py-1 text-[11px] font-semibold text-[#A9803C]">
+            {totalTasks} total results
+          </span>
+        </div>
+      )}
     </section>
   )
 }

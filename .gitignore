@@ -13,6 +13,7 @@ HELP.md
 .springBeans
 .sts4-cache
 .settings/
+.classpath
 
 # Build directories
 **/build/
